@@ -1,3 +1,5 @@
+<!-- prettier-ignore-start -->
+
 # Проектная работа "Веб-ларек"
 
 Стек: HTML, SCSS, TS, Webpack
@@ -268,7 +270,7 @@ interface IBasketList extends IProductList {
 >
 > }
 >
-> ````
+> ```
 > </details>
 >
 > <details>
@@ -334,13 +336,13 @@ interface IBasketList extends IProductList {
 > 		this.emit("basketList:changed", {count: this._totalProducts, price: this._totalPrice});
 > 	}
 > }
-> ````
+> ```
 >
 > </details>
 >
 > <details>
 > <summary>Профиль покупателя</summary>
->  
+>
 > ```typescript
 > // Вспомогательные типы
 > // Тип оплаты
@@ -358,12 +360,12 @@ interface IBasketList extends IProductList {
 > // Профиль покупателя
 > // "Подключаем" брокер событий и указываем интерфейс
 > class CustomerProfile extends EventEmitter implements ICustomerProfile {
-> protected \_id: string;
-> protected \_fullName: string;
-> protected \_preferedPayment: PaymentType;
-> protected \_address: string;
-> protected \_email: string;
-> protected \_phone: string;
+> protected _id: string;
+> protected _fullName: string;
+> protected _preferedPayment: PaymentType;
+> protected _address: string;
+> protected _email: string;
+> protected _phone: string;
 >
 >     // Конструктор класса
 >     constructor() {
@@ -452,8 +454,6 @@ interface IBasketList extends IProductList {
 >
 > ```
 > </details>
->
-> ```
 
 #### Представление
 
@@ -561,3 +561,4 @@ class CardCatalogView extends CardBaseView {
 > | ~~Presenter~~ | ~~"contactsForm:valid"~~ | ~~error: string~~ | ~~сообщает форме об ошибках валидации (или их отсутствии), разрешает submit~~ |
 >
 > Проверка валидации осуществляется в методах модели CustomerProfile.
+<!-- prettier-ignore-end -->
