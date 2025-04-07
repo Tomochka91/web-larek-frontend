@@ -64,7 +64,6 @@ yarn build
 <br>
 
 ---
-
 ### Описание слоев
 
 #### Структура слоя модели (основные классы):
@@ -100,17 +99,16 @@ yarn build
 - Реализовано использование универсального модального окна, предназначенного для наполнения различным содержимым. Для окна реализованы базовые методы открытия и закрытия;
 - Логику работы с формами можно реализовать разными способами. Автор планирует выполнить последовательную обработку на базе используемого брокера событий.
 
-> ℹ️ **Изменения 07-04-2025:**
->
+>ℹ️ **Изменения 07-04-2025:**
 > - Кнопки в превью карточки и корзине не являются сабмиттерами формы. Вышеуказанные кнопки относятся непосредственно к шаблонам превью и корзины.
 > - Классы-предсталения главной страницы и корзины не зависят от выбора шаблона разметки продукта. При необходимости заполнения контейнера (каталога или корзины), презентер, используя интерфейс-конструктор, создаст необходимый массив HTML элементов.
 >
-> ```typescript
-> // Рендер элементов корзины (в презентере)
-> renderBasketView() {
+>```typescript
+>// Рендер элементов корзины (в презентере)
+>renderBasketView() {
 >    // Получаем из модели кол-во продуктов в корзине (геттер родителя)
 >    const basketTotalProducts = this.basketModel.totalProducts
->
+>    
 >    if (basketTotalProducts > 0) {
 >        // Логика заполненной корзины
 >        // Получаем из модели содержимое корзины
@@ -125,7 +123,7 @@ yarn build
 >            const basketItemElement = basketItem.render(item);
 >            return basketItemElement;
 >          });
->
+>          
 >        // Заполняем контейнер корзины HTML элементами продуктов
 >        this.viewBasket.basketContainer = basketList;
 >        // Устанавливаем стоимость товаров в корзине (или ничего, если товар "бесценный")
@@ -134,9 +132,9 @@ yarn build
 >    } else {
 >        // Логика пустой корзины (нужно не забыть выключить кнопку)
 >    }
->    // ...
-> }
-> ```
+>    // ...   
+>}
+>```
 
 PS: дополнительно, в ходе реализации проекта нужно будет выполнять проверку HTML элементов при передаче. Для самих же компонентов может понадобится создание "родительских" оберток, реализующих общие методы.
 
@@ -147,16 +145,15 @@ PS: дополнительно, в ходе реализации проекта 
 Сам же презентер, имея связь как с классами модели, так и с классами представления, содержит в себе обработчики эмитируемых событий ( 1 ), ~~валидаторы~~ ( 2 ) и прочее, определяет логику взамидействия слоев между собой.
 PS: для интерфейсов и классов, которые используют функционал EventEmitter-а, на текущей версии проекта в определении (extends IEvents / extends EventEmitter) это ещё не показано.
 
-> ℹ️ **Изменения 07-04-2025:**
-> Проект небольшой, поэтому наличие отдельного класса-презентера не является обязательным. Обработчики, в таком случае, действительно можно разместить в глобальной области видимости. С публичными полями тоже работать несколько удобнее и проще.
-> Но, автор изначально руководствовался проектом "ToDo", для которого реализован отдельный класс-оболочка презентер. В таком варианте необходимые классы("ссылки") и экземпляры необходимо передавать внутрь заранее (в модуле index.ts).
-> ( 1 ) Первичная обработка встроенных (браузерных) событий осуществляется в соответствующих классах слоя представления
-> ( 2 ) В настоящем проекте проверка валидации осуществляется в модели
+>ℹ️ **Изменения 07-04-2025:**
+>Проект небольшой, поэтому наличие отдельного класса-презентера не является обязательным. Обработчики, в таком случае, действительно можно разместить в глобальной области видимости. С публичными полями тоже работать несколько удобнее и проще.
+>Но, автор изначально руководствовался проектом "ToDo", для которого реализован отдельный класс-оболочка презентер. В таком варианте необходимые классы("ссылки") и экземпляры необходимо передавать внутрь заранее (в модуле index.ts).
+>( 1 ) Первичная обработка встроенных (браузерных) событий осуществляется в соответствующих классах слоя представления
+>( 2 ) В настоящем проекте проверка валидации осуществляется в модели
 
 <br>
 
 ---
-
 ### Примеры классов и их интерфейсов
 
 #### Модель
@@ -164,295 +161,290 @@ PS: для интерфейсов и классов, которые исполь
 ```typescript
 // Единица товара (интерфейс)
 interface IProductItem {
-	id: string; // Id товара
-	description: string; // Описание товара
-	image: string; // Ссылка на изображение товара
-	title: string; // Название товара
-	category: string; // Категория
-	price: number | null; // Цена единицы товара (или "бесценно")
+	id: string;             // Id товара
+	description: string;    // Описание товара
+	image: string;          // Ссылка на изображение товара
+	title: string;          // Название товара
+	category: string;       // Категория
+	price: number | null;   // Цена единицы товара (или "бесценно")
 }
 ```
 
 ```typescript
 // Каталог товаров (интерфейс)
 interface IProductList {
-	productList: IProductItem[]; // Каталог товаров
-	totalProducts: number; // Кол-во товаров в каталоге
-	addProduct(productItem: IProductItem): IProductItem; // Добавить единицу продукта в каталог
-	getProduct(id: string): IProductItem; // Получить единицу продукта из каталога по Id
+	productList: IProductItem[];                           // Каталог товаров
+	totalProducts: number;                                 // Кол-во товаров в каталоге
+	addProduct(productItem: IProductItem): IProductItem;   // Добавить единицу продукта в каталог
+	getProduct(id: string): IProductItem;                  // Получить единицу продукта из каталога по Id
 }
 ```
-
-> ℹ️ **Изменения 07-04-2025:**
-> Изменена структура полей и методов класса ProductList (см. описание ниже)
+>ℹ️ **Изменения 07-04-2025:**
+>Изменена структура полей и методов класса ProductList (см. описание ниже)
 
 ```typescript
 // Корзина товаров (интерфейс)
 interface IBasketList extends IProductList {
-	totalPrice: number | null; // Стоимость товаров в корзине
-	removeProduct(id: string): void; // Удалить товар из корзины по Id
-	clearBasket(): void; // Очистить корзину
+	totalPrice: number | null;                  // Стоимость товаров в корзине
+	removeProduct(id: string): void;            // Удалить товар из корзины по Id
+	clearBasket(): void;                        // Очистить корзину
 }
 ```
 
-> ℹ️ **Изменения 07-04-2025:**
+>ℹ️ **Изменения 07-04-2025:**
+>##### Краткое описание классов модели и их методов
 >
-> ##### Краткое описание классов модели и их методов
->
-> <details>
-> <summary>Каталог товаров</summary>
+><details>
+><summary>Каталог товаров</summary>
 >  
-> ```typescript
-> // "Подключаем" брокер событий и указываем интерфейс
-> class ProductList extends EventEmitter implements IProductList {
-> 	protected _productList: IProductItem[];
-> 	protected _totalProducts: number;
+>```typescript
+>// "Подключаем" брокер событий и указываем интерфейс
+>class ProductList extends EventEmitter implements IProductList {
+>	protected _productList: IProductItem[];
+>	protected _totalProducts: number;
 >    
-> 	// Конструктор класса (без аргументов)
-> 	constructor() {
-> 		// Конструктор родителя
-> 		super();
-> 		this._productList = [];
-> 		this._totalProducts = 0;
-> 	}
+>	// Конструктор класса (без аргументов)
+>	constructor() {
+>		// Конструктор родителя
+>		super();
+>		this._productList = [];
+>		this._totalProducts = 0;
+>	}
 >
->     // Метод, который заполняет массив товаров (каталог)
->     set productList(data: IProductItem[]) {
->     	// Основная работа сеттера (заполнить поле данными, полученными от сервера, или ещё откуда-то)
->     	this._productList = data;
->     	// Обновляем поле с кол-вом товаров в каталоге
->     	this._update();
->     	// Эмитируем событие, что данные изменились
->     	this._emitChanged()
->     }
+>	// Метод, который заполняет массив товаров (каталог)
+>	set productList(data: IProductItem[]) {
+>		// Основная работа сеттера (заполнить поле данными, полученными от сервера, или ещё откуда-то)
+>		this._productList = data;
+>		// Обновляем поле с кол-вом товаров в каталоге
+>		this._update();
+>		// Эмитируем событие, что данные изменились
+>		this._emitChanged()
+>	}
+>  
+>	// Метод, используя который, можно получить массив товаров (каталог)
+>	get productList() {
+>		return this._productList;
+>	}
+>  
+>	// Метод, который устанавливает кол-во товаров (можно сделать непубличным)
+>	set totalProducts(count: number) {
+>		this._totalProducts = count;
+>	}
+>  
+>	// Метод, используя который, можно узнать кол-во товаров в каталоге
+>	get totalProducts() {
+>		return this._totalProducts;
+>	}
+>  
+>	// Внутренний метод, который считает кол-во товаров в массиве и обновляет соответствующее поле
+>	protected _update(): void {
+>		this._totalProducts = this._productList.length || 0;
+>	}
+>  
+>	// Метод для добавления одного товара в каталог (раз уж есть такая возможность в Api)
+>	addProduct(productItem: IProductItem) {
+>		// Добавляем новый товар в каталог
+>		this._productList.push(productItem);
+>		// Обновляем поле с кол-вом товаров в каталоге
+>		this._update();
+>		// Эмитируем событие, что данные изменились
+>		this._emitChanged()
+>		// Возвращаем "товар"
+>		return productItem;
+>	}
+>  
+>	// Метод, чтобы получить данные товара, зная его Id
+>	getProduct(id: string) {
+>		return this._productList.find((productItem) => productItem.id === id);
+>	}
 >
->     // Метод, используя который, можно получить массив товаров (каталог)
->     get productList() {
->     	return this._productList;
->     }
+>	// Переопределяемый метод для брокера событий
+>	protected _emitChanged(): void {
+>		this.emit("productList:changed");
+>	}
+>}
+>```
+></details>
 >
->     // Метод, который устанавливает кол-во товаров (можно сделать непубличным)
->     set totalProducts(count: number) {
->     	this._totalProducts = count;
->     }
+><details>
+><summary>Корзина</summary>
+>  
+>```typescript
+>// "Наследуем" поля и методы от класса каталога и указываем интерфейс
+>class BasketList extends ProductList implements IBasketList {
+>	// null - бесценный товар
+>	protected _totalPrice: number | null;
 >
->     // Метод, используя который, можно узнать кол-во товаров в каталоге
->     get totalProducts() {
->     	return this._totalProducts;
->     }
+>	// Конструктор класса (без аргументов)
+>	constructor() {
+>		// Конструктор родителя
+>		super();
+>		// По-умолчанию выставляем 0, что соответствует отсутствию товаров в корзине.
+>		this._totalPrice = 0;
+>		// Возможно, понадобится сразу сделать это, но не факт (нужно отлаживать)
+>		// this._emitChanged()
+>	}
 >
->     // Внутренний метод, который считает кол-во товаров в массиве и обновляет соответствующее поле
->     protected _update(): void {
->     	this._totalProducts = this._productList.length || 0;
->     }
+>	// Метод, который устанавливает стоимость товаров (можно сделать непубличным)
+>	set totalPrice(price: number) {
+>		this._totalPrice = price;
+>	}
+>  
+>	// Метод, используя который, можно узнать стоимость товаров в корзине
+>	get totalPrice() {
+>		return this._totalPrice;
+>	}
+>  
+>	// Внутренний метод, который считает стоимость товаров в корзине и обновляет соответствующее поле
+>	protected _update(): void {
+>		// Вызывая метод родителя, обновляем кол-во товаров в корзине
+>		super._update();
+>		// Тут считаем стоимость товаров в корзине, включая проверку на "бесценно"
+>		// ...
+>	}
 >
->     // Метод для добавления одного товара в каталог (раз уж есть такая возможность в Api)
->     addProduct(productItem: IProductItem) {
->     	// Добавляем новый товар в каталог
->     	this._productList.push(productItem);
->     	// Обновляем поле с кол-вом товаров в каталоге
->     	this._update();
->     	// Эмитируем событие, что данные изменились
->     	this._emitChanged()
->     	// Возвращаем "товар"
->     	return productItem;
->     }
+>	// Метод для удаления одного товара из корзины
+>	removeProduct(id: string) {
+>		// Удаляем товар из корзины
+>		this._productList = this._productList.filter((productItem) => productItem.id !== id);
+>		// Обновляем поле родителя с кол-вом товаров в корзине и поле потомка со стоимостью
+>		this._update();
+>		// Эмитируем событие, что данные изменились
+>		this._emitChanged()
+>	}
 >
->     // Метод, чтобы получить данные товара, зная его Id
->     getProduct(id: string) {
->     	return this._productList.find((productItem) => productItem.id === id);
->     }
+>	// Очистка корзины
+>	clearBasket() {
+>		// Удаляем всё из массива
+>		this._productList = [];
+>		// Обновляем поле родителя с кол-вом товаров в корзине и поле потомка со стоимостью
+>		this._update();
+>		// Эмитируем событие, что данные изменились
+>		this._emitChanged()
+>	}
+>	
+>	// Тут переопределим метод родителя
+>	protected _emitChanged(): void {
+>		// Добавим немного данных
+>		this.emit("basketList:changed", {count: this._totalProducts, price: this._totalPrice});
+>	}
+>}
+>```
+></details>
 >
->     // Переопределяемый метод для брокера событий
->     protected _emitChanged(): void {
->     	this.emit("productList:changed");
->     }
+><details>
+><summary>Профиль покупателя</summary>
+>  
+>```typescript
+>// Вспомогательные типы
+>// Тип оплаты
+>type PaymentType = 'card' | 'cash';
 >
-> }
+>// Тип валидатора
+>type ValidatorType = 'address' | 'email' | 'phone';
 >
-> ```
-> </details>
+>// Результат валидации
+>type ValidationResult = {
+>	isValid: boolean;
+>	error: string;
+>};
 >
-> <details>
-> <summary>Корзина</summary>
+>// Профиль покупателя
+>// "Подключаем" брокер событий и указываем интерфейс
+>class CustomerProfile extends EventEmitter implements ICustomerProfile {
+>	protected _id: string;
+>	protected _fullName: string;
+>	protected _preferedPayment: PaymentType;
+>	protected _address: string;
+>	protected _email: string;
+>	protected _phone: string;
 >
-> ```typescript
-> // "Наследуем" поля и методы от класса каталога и указываем интерфейс
-> class BasketList extends ProductList implements IBasketList {
-> 	// null - бесценный товар
-> 	protected _totalPrice: number | null;
+>	// Конструктор класса
+>	constructor() {
+>		// Конструктор родителя
+>		super();
+>		// Тут инициализируются поля
+>		// ...
+>	}
 >
-> 	// Конструктор класса (без аргументов)
-> 	constructor() {
-> 		// Конструктор родителя
-> 		super();
-> 		// По-умолчанию выставляем 0, что соответствует отсутствию товаров в корзине.
-> 		this._totalPrice = 0;
-> 		// Возможно, понадобится сразу сделать это, но не факт (нужно отлаживать)
-> 		// this._emitChanged()
-> 	}
+>	// Сеттеры с валидацией
+>	set address(address: string) {
+>		const isValid = this._isValid('address', address);
 >
-> 	// Метод, который устанавливает стоимость товаров (можно сделать непубличным)
-> 	set totalPrice(price: number) {
-> 		this._totalPrice = price;
-> 	}
+>		if (isValid) {
+>			this._address = address;
+>		}
+>	}
 >
-> 	// Метод, используя который, можно узнать стоимость товаров в корзине
-> 	get totalPrice() {
-> 		return this._totalPrice;
-> 	}
+>	set email(email: string) {
+>		const isValid = this._isValid('email', email);
 >
-> 	// Внутренний метод, который считает стоимость товаров в корзине и обновляет соответствующее поле
-> 	protected _update(): void {
-> 		// Вызывая метод родителя, обновляем кол-во товаров в корзине
-> 		super._update();
-> 		// Тут считаем стоимость товаров в корзине, включая проверку на "бесценно"
-> 		// ...
-> 	}
+>		if (isValid) {
+>			this._email = email;
+>		}
+>	}
 >
-> 	// Метод для удаления одного товара из корзины
-> 	removeProduct(id: string) {
-> 		// Удаляем товар из корзины
-> 		this._productList = this._productList.filter((productItem) => productItem.id !== id);
-> 		// Обновляем поле родителя с кол-вом товаров в корзине и поле потомка со стоимостью
-> 		this._update();
-> 		// Эмитируем событие, что данные изменились
-> 		this._emitChanged()
-> 	}
+>	set phone(phone: string) {
+>		const isValid = this._isValid('phone', phone);
 >
-> 	// Очистка корзины
-> 	clearBasket() {
-> 		// Удаляем всё из массива
-> 		this._productList = [];
-> 		// Обновляем поле родителя с кол-вом товаров в корзине и поле потомка со стоимостью
-> 		this._update();
-> 		// Эмитируем событие, что данные изменились
-> 		this._emitChanged()
-> 	}
+>		if (isValid) {
+>			this._phone = phone;
+>		}
+>	}
 >
-> 	// Тут переопределим метод родителя
-> 	protected _emitChanged(): void {
-> 		// Добавим немного данных
-> 		this.emit("basketList:changed", {count: this._totalProducts, price: this._totalPrice});
-> 	}
-> }
-> ```
+>	// Прочие сеттеры и геттеры
+>	// ...
 >
-> </details>
+>	// Валидатор (универсальный валидатор)
+>	protected _isValid(type: ValidatorType, data: string): boolean {
+>		let result: ValidationResult;
 >
-> <details>
-> <summary>Профиль покупателя</summary>
+>		if (type === 'address') {
+>			result = this._validateAddress(data);
+>			this.emit("paymentForm:valid", result);
+>		} else if (type === 'email') {
+>			result = this._validateEmail(data);
+>			this.emit("contactsForm:valid", result);
+>		} else if (type === 'phone') {
+>			result = this._validatePhone(data);
+>			this.emit("contactsForm:valid", result);
+>		} else {
+>			// Тут нужно будет что-то вставить
+>		}
 >
-> ```typescript
-> // Вспомогательные типы
-> // Тип оплаты
-> type PaymentType = 'card' | 'cash';
+>		return result.isValid;
+>	}
 >
-> // Тип валидатора
-> type ValidatorType = 'address' | 'email' | 'phone';
+>	// Валидатор адреса
+>	protected _validateAddress(address: string): ValidationResult {
+>		let result: ValidationResult = {isValid: false, error: ''};
+>		// Тело валидатора адреса
+>		// ...
 >
-> // Результат валидации
-> type ValidationResult = {
-> isValid: boolean;
-> error: string;
-> };
+>		return result;
+>	}
 >
-> // Профиль покупателя
-> // "Подключаем" брокер событий и указываем интерфейс
-> class CustomerProfile extends EventEmitter implements ICustomerProfile {
-> protected _id: string;
-> protected _fullName: string;
-> protected _preferedPayment: PaymentType;
-> protected _address: string;
-> protected _email: string;
-> protected _phone: string;
+>	// Валидатор email
+>	protected _validateEmail(email: string): ValidationResult {
+>		let result: ValidationResult = {isValid: false, error: ''};
+>		// Тело валидатора электронной почты
+>		// ...
 >
->     // Конструктор класса
->     constructor() {
->     	// Конструктор родителя
->     	super();
->     	// Тут инициализируются поля
->     	// ...
->     }
+>		return result;
+>	}
 >
->     // Сеттеры с валидацией
->     set address(address: string) {
->     	const isValid = this._isValid('address', address);
+>	// Валидатор телефонного номера
+>	protected _validatePhone(phone: string): ValidationResult {
+>		let result: ValidationResult = {isValid: false, error: ''};
+>		// Тело валидатора телефонного номера
+>		// ...
 >
->     	if (isValid) {
->     		this._address = address;
->     	}
->     }
->
->     set email(email: string) {
->     	const isValid = this._isValid('email', email);
->
->     	if (isValid) {
->     		this._email = email;
->     	}
->     }
->
->     set phone(phone: string) {
->     	const isValid = this._isValid('phone', phone);
->
->     	if (isValid) {
->     		this._phone = phone;
->     	}
->     }
->
->     // Прочие сеттеры и геттеры
->     // ...
->
->     // Валидатор (универсальный валидатор)
->     protected _isValid(type: ValidatorType, data: string): boolean {
->     	let result: ValidationResult;
->
->     	if (type === 'address') {
->     		result = this._validateAddress(data);
->     		this.emit("paymentForm:valid", result);
->     	} else if (type === 'email') {
->     		result = this._validateEmail(data);
->     		this.emit("contactsForm:valid", result);
->     	} else if (type === 'phone') {
->     		result = this._validatePhone(data);
->     		this.emit("contactsForm:valid", result);
->     	} else {
->     		// Тут нужно будет что-то вставить
->     	}
->
->     	return result.isValid;
->     }
->
->     // Валидатор адреса
->     protected _validateAddress(address: string): ValidationResult {
->     	let result: ValidationResult = {isValid: false, error: ''};
->     	// Тело валидатора адреса
->     	// ...
->
->     	return result;
->     }
->
->     // Валидатор email
->     protected _validateEmail(email: string): ValidationResult {
->     	let result: ValidationResult = {isValid: false, error: ''};
->     	// Тело валидатора электронной почты
->     	// ...
->
->     	return result;
->     }
->
->     // Валидатор телефонного номера
->     protected _validatePhone(phone: string): ValidationResult {
->     	let result: ValidationResult = {isValid: false, error: ''};
->     	// Тело валидатора телефонного номера
->     	// ...
->
->     	return result;
->     }
-> }
-> ```
-> </details>
-
+>		return result;
+>	}
+>}
+>```
+></details>
+  
 #### Представление
 
 ```typescript
@@ -469,39 +461,38 @@ interface ICardConstructor<T extends ICardView> {
 
 // Абстрактный класс карточки, в котором определены общие поля и методы
 abstract class CardBaseView implements ICardView {
-	id: string;
-	render(item: IProductItem): HTMLElement;
+    id: string;
+    render(item: IProductItem): HTMLElement;
 }
 
 // Один из классов-представлений для карточки товара
 class CardCatalogView extends CardBaseView {
-	// Тут будут внутренние и защищенные поля...
-	protected itemElement: HTMLElement;
-	// ...
+    // Тут будут внутренние и защищенные поля...
+    protected itemElement: HTMLElement;
+    // ...
 
-	// Конструктор класса
-	constructor(template: HTMLTemplateElement) {
-		// Конструктор родителя
-		super();
-		// ...
-	}
+    // Конструктор класса
+    constructor(template: HTMLTemplateElement) {
+        // Конструктор родителя
+        super();
+        // ...
+    }
 
-	// Возвращаем элемент разметки
-	render(item: IProductItem): HTMLElement {
-		this.id = item.id;
-		// ...
-		return this.itemElement;
-	}
+    // Возвращаем элемент разметки
+    render(item: IProductItem): HTMLElement {
+        this.id = item.id
+        // ...
+        return this.itemElement;
+    }
 
-	// Другие методы класса
-	// ...
+    // Другие методы класса
+    // ...
 }
 ```
 
 <br>
 
 ---
-
 ### Брокер событий. Неокончательный перечень эмитентов, событий и слушателей
 
 #### События, эмитируемые моделью:
@@ -514,13 +505,15 @@ class CardCatalogView extends CardBaseView {
 | Api         | "api:productItem_received" | товар                     | передает данные отдельного товара в модель                                                                                         |
 | Api         | "api:order_success"        | данные заказа             | в случае успешной обработки сервером заказа, необходимо будет отобразить соответствующий попап, удалить закаказ и очистить корзину |
 
-> ℹ️ **Изменения 07-04-2025:**
-> | Эмитент | Название | Данные | Описание |
-> | --------- | -------------------- | ------------- | ------------------------------------------------------------------------- |
-> | CustomerProfile | "paymentForm:valid" | isValid: boolean, error: string | сообщает форме об ошибках валидации (или их отсутствии), разрешает submit |
-> | CustomerProfile | "contactsForm:valid" | isValid: boolean, error: string | сообщает форме об ошибках валидации (или их отсутствии), разрешает submit |
+>ℹ️ **Изменения 07-04-2025:**
+>| Эмитент   | Название             | Данные        | Описание                                                                  |
+>| --------- | -------------------- | ------------- | ------------------------------------------------------------------------- |
+>| CustomerProfile | "paymentForm:valid"  | isValid: boolean, error: string | сообщает форме об ошибках валидации (или их отсутствии), разрешает submit |
+>| CustomerProfile | "contactsForm:valid" | isValid: boolean, error: string | сообщает форме об ошибках валидации (или их отсутствии), разрешает submit |
 >
-> Для класса CustomerProfile добавлена проверка валидации.
+>Для класса CustomerProfile добавлена проверка валидации.
+
+
 
 #### События, эмитируемые представлением:
 
@@ -541,22 +534,24 @@ class CardCatalogView extends CardBaseView {
 | ContactsFormView | "contactsForm:submit"  | email, phone             | сабмит формы                                                          |
 | SuccessView      | "success"              | нет                      | успешное оформление заказа (инициирует очистку корзины, заказа и пр.) |
 
-> ℹ️ **Изменения 07-04-2025:**
+
+>ℹ️ **Изменения 07-04-2025:**
 >
-> ~~События, эмитируемые презентером:~~
+>~~События, эмитируемые презентером:~~
 >
-> | Эмитент       | Название           | Данные                | Описание                                                  |
-> | ------------- | ------------------ | --------------------- | --------------------------------------------------------- |
-> | ~~Presenter~~ | ~~"basket:total"~~ | ~~count, totalPrice~~ | ~~есть ли в корзине товары и сколько они суммарно стоят~~ |
+>| Эмитент   | Название       | Данные            | Описание                                              |
+>| --------- | -------------- | ----------------- | ----------------------------------------------------- |
+>| ~~Presenter~~ | ~~"basket:total"~~ | ~~count, totalPrice~~ | ~~есть ли в корзине товары и сколько они суммарно стоят~~ |
 >
-> Презентер не эмитирует события.
+>Презентер не эмитирует события.
 >
-> ~~События, эмитируемые валидаторами:~~
+>~~События, эмитируемые валидаторами:~~
 >
-> | Эмитент       | Название                 | Данные            | Описание                                                                      |
-> | ------------- | ------------------------ | ----------------- | ----------------------------------------------------------------------------- |
-> | ~~Presenter~~ | ~~"paymentForm:valid"~~  | ~~error: string~~ | ~~сообщает форме об ошибках валидации (или их отсутствии), разрешает submit~~ |
-> | ~~Presenter~~ | ~~"contactsForm:valid"~~ | ~~error: string~~ | ~~сообщает форме об ошибках валидации (или их отсутствии), разрешает submit~~ |
+>| Эмитент   | Название             | Данные        | Описание                                                                  |
+>| --------- | -------------------- | ------------- | ------------------------------------------------------------------------- |
+>| ~~Presenter~~ | ~~"paymentForm:valid"~~  | ~~error: string~~ | ~~сообщает форме об ошибках валидации (или их отсутствии), разрешает submit~~ |
+>| ~~Presenter~~ | ~~"contactsForm:valid"~~ | ~~error: string~~ | ~~сообщает форме об ошибках валидации (или их отсутствии), разрешает submit~~ |
 >
-> Проверка валидации осуществляется в методах модели CustomerProfile.
+>Проверка валидации осуществляется в методах модели CustomerProfile.
+
 <!-- prettier-ignore-end -->
