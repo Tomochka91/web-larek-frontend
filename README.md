@@ -452,6 +452,7 @@ interface IBasketList extends IProductList {
 >
 > ```
 > </details>
+>
 > ```
 
 #### Представление
