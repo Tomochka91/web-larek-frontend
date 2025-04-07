@@ -191,7 +191,8 @@ interface IBasketList extends IProductList {
 
 <details>
 <summary>Каталог товаров</summary>
-```js
+  
+```
 // Каталог товаров
 // "Подключаем" брокер событий и указываем интерфейс
 class ProductList extends EventEmitter implements IProductList {
@@ -265,6 +266,7 @@ class ProductList extends EventEmitter implements IProductList {
 
 <details>
 <summary>Корзина</summary>
+
 ```
 
 // Корзина
@@ -329,12 +331,14 @@ protected \_totalPrice: number | null;
 
 }
 
-````
+```
 </details>
 
 <details>
 <summary>Профиль покупателя</summary>
-```js
+
+```
+
 // Вспомогательные типы
 // Тип оплаты
 type PaymentType = 'card' | 'cash';
@@ -344,133 +348,135 @@ type ValidatorType = 'address' | 'email' | 'phone';
 
 // Результат валидации
 type ValidationResult = {
-	isValid: boolean;
-	error: string;
+isValid: boolean;
+error: string;
 };
 
 // Профиль покупателя
 // "Подключаем" брокер событий и указываем интерфейс
 class CustomerProfile extends EventEmitter implements ICustomerProfile {
-	protected _id: string;
-	protected _fullName: string;
-	protected _preferedPayment: PaymentType;
-	protected _address: string;
-	protected _email: string;
-	protected _phone: string;
+protected \_id: string;
+protected \_fullName: string;
+protected \_preferedPayment: PaymentType;
+protected \_address: string;
+protected \_email: string;
+protected \_phone: string;
 
-	// Конструктор класса
-	constructor() {
-		// Конструктор родителя
-		super();
-		// Тут инициализируются поля
-		// ...
-	}
+    // Конструктор класса
+    constructor() {
+    	// Конструктор родителя
+    	super();
+    	// Тут инициализируются поля
+    	// ...
+    }
 
-	// Сеттеры с валидацией
-	set address(address: string) {
-		const isValid = this._isValid('address', address);
+    // Сеттеры с валидацией
+    set address(address: string) {
+    	const isValid = this._isValid('address', address);
 
-		if (isValid) {
-			this._address = address;
-		}
-	}
+    	if (isValid) {
+    		this._address = address;
+    	}
+    }
 
-	set email(email: string) {
-		const isValid = this._isValid('email', email);
+    set email(email: string) {
+    	const isValid = this._isValid('email', email);
 
-		if (isValid) {
-			this._email = email;
-		}
-	}
+    	if (isValid) {
+    		this._email = email;
+    	}
+    }
 
-	set phone(phone: string) {
-		const isValid = this._isValid('phone', phone);
+    set phone(phone: string) {
+    	const isValid = this._isValid('phone', phone);
 
-		if (isValid) {
-			this._phone = phone;
-		}
-	}
+    	if (isValid) {
+    		this._phone = phone;
+    	}
+    }
 
-	// Прочие сеттеры и геттеры
-	// ...
+    // Прочие сеттеры и геттеры
+    // ...
 
 
-	// Валидатор (универсальный валидатор)
-	protected _isValid(type: ValidatorType, data: string): boolean {
-		let result: ValidationResult;
+    // Валидатор (универсальный валидатор)
+    protected _isValid(type: ValidatorType, data: string): boolean {
+    	let result: ValidationResult;
 
-		if (type === 'address') {
-			result = this._validateAddress(data);
-			this.emit("paymentForm:valid", result);
-		} else if (type === 'email') {
-			result = this._validateEmail(data);
-			this.emit("contactsForm:valid", result);
-		} else if (type === 'phone') {
-			result = this._validatePhone(data);
-			this.emit("contactsForm:valid", result);
-		} else {
-			// Тут нужно будет что-то вставить
-		}
+    	if (type === 'address') {
+    		result = this._validateAddress(data);
+    		this.emit("paymentForm:valid", result);
+    	} else if (type === 'email') {
+    		result = this._validateEmail(data);
+    		this.emit("contactsForm:valid", result);
+    	} else if (type === 'phone') {
+    		result = this._validatePhone(data);
+    		this.emit("contactsForm:valid", result);
+    	} else {
+    		// Тут нужно будет что-то вставить
+    	}
 
-		return result.isValid;
-	}
+    	return result.isValid;
+    }
 
-	// Валидатор адреса
-	protected _validateAddress(address: string): ValidationResult {
-		let result: ValidationResult = {isValid: false, error: ''};
-		// Тело валидатора адреса
-		// ...
+    // Валидатор адреса
+    protected _validateAddress(address: string): ValidationResult {
+    	let result: ValidationResult = {isValid: false, error: ''};
+    	// Тело валидатора адреса
+    	// ...
 
-		return result;
-	}
+    	return result;
+    }
 
-	// Валидатор email
-	protected _validateEmail(email: string): ValidationResult {
-		let result: ValidationResult = {isValid: false, error: ''};
-		// Тело валидатора электронной почты
-		// ...
+    // Валидатор email
+    protected _validateEmail(email: string): ValidationResult {
+    	let result: ValidationResult = {isValid: false, error: ''};
+    	// Тело валидатора электронной почты
+    	// ...
 
-		return result;
-	}
+    	return result;
+    }
 
-	// Валидатор телефонного номера
-	protected _validatePhone(phone: string): ValidationResult {
-		let result: ValidationResult = {isValid: false, error: ''};
-		// Тело валидатора телефонного номера
-		// ...
+    // Валидатор телефонного номера
+    protected _validatePhone(phone: string): ValidationResult {
+    	let result: ValidationResult = {isValid: false, error: ''};
+    	// Тело валидатора телефонного номера
+    	// ...
 
-		return result;
-	}
+    	return result;
+    }
+
 }
-````
 
+```
 </details>
-  
+
 #### Представление
 
 ```
+
 // Интерфейс представления карточки (для абстрактного класса и трёх его потомков)
 export interface ICardView {
-	id: string;
-	render(item: IProductItem): HTMLElement;
+id: string;
+render(item: IProductItem): HTMLElement;
 }
 
 // Универсальный конструктор для карточек
 export interface ICardConstructor<T extends ICardView> {
-	new (template: HTMLTemplateElement): T;
+new (template: HTMLTemplateElement): T;
 }
 
 // Абстрактный класс карточки, в котором определены общие поля и методы
 abstract class CardBaseView implements ICardView {
-    id: string;
-    render(item: IProductItem): HTMLElement;
+id: string;
+render(item: IProductItem): HTMLElement;
 }
 
 // Один из классов-представлений для карточки товара
 class CardCatalogView extends CardBaseView {
-    // Тут будут внутренние и защищенные поля...
-    protected itemElement: HTMLElement;
-    // ...
+// Тут будут внутренние и защищенные поля...
+protected itemElement: HTMLElement;
+// ...
 
     // Конструктор класса
     constructor(template: HTMLTemplateElement) {
@@ -488,7 +494,9 @@ class CardCatalogView extends CardBaseView {
 
     // Другие методы класса
     // ...
+
 }
+
 ```
 
 ### Брокер событий. Неокончательный перечень эмитентов, событий и слушателей
@@ -503,13 +511,15 @@ class CardCatalogView extends CardBaseView {
 | Api         | "api:productItem_received" | товар                     | передает данные отдельного товара в модель                                                                                         |
 | Api         | "api:order_success"        | данные заказа             | в случае успешной обработки сервером заказа, необходимо будет отобразить соответствующий попап, удалить закаказ и очистить корзину |
 
-> ℹ️ **Изменения 07-04-2025:**
-> | Эмитент | Название | Данные | Описание |
-> | --------- | -------------------- | ------------- | ------------------------------------------------------------------------- |
-> | CustomerProfile | "paymentForm:valid" | isValid: boolean, error: string | сообщает форме об ошибках валидации (или их отсутствии), разрешает submit |
-> | CustomerProfile | "contactsForm:valid" | isValid: boolean, error: string | сообщает форме об ошибках валидации (или их отсутствии), разрешает submit |
+>ℹ️ **Изменения 07-04-2025:**
+>| Эмитент   | Название             | Данные        | Описание                                                                  |
+>| --------- | -------------------- | ------------- | ------------------------------------------------------------------------- |
+>| CustomerProfile | "paymentForm:valid"  | isValid: boolean, error: string | сообщает форме об ошибках валидации (или их отсутствии), разрешает submit |
+>| CustomerProfile | "contactsForm:valid" | isValid: boolean, error: string | сообщает форме об ошибках валидации (или их отсутствии), разрешает submit |
 >
-> Для класса CustomerProfile добавлена проверка валидации.
+>Для класса CustomerProfile добавлена проверка валидации.
+
+
 
 #### События, эмитируемые представлением:
 
@@ -530,21 +540,23 @@ class CardCatalogView extends CardBaseView {
 | ContactsFormView | "contactsForm:submit"  | email, phone             | сабмит формы                                                          |
 | SuccessView      | "success"              | нет                      | успешное оформление заказа (инициирует очистку корзины, заказа и пр.) |
 
-> ℹ️ **Изменения 07-04-2025:**
+
+>ℹ️ **Изменения 07-04-2025:**
 >
-> ~~События, эмитируемые презентером:~~
+>~~События, эмитируемые презентером:~~
 >
-> | Эмитент       | Название           | Данные                | Описание                                                  |
-> | ------------- | ------------------ | --------------------- | --------------------------------------------------------- |
-> | ~~Presenter~~ | ~~"basket:total"~~ | ~~count, totalPrice~~ | ~~есть ли в корзине товары и сколько они суммарно стоят~~ |
+>| Эмитент   | Название       | Данные            | Описание                                              |
+>| --------- | -------------- | ----------------- | ----------------------------------------------------- |
+>| ~~Presenter~~ | ~~"basket:total"~~ | ~~count, totalPrice~~ | ~~есть ли в корзине товары и сколько они суммарно стоят~~ |
 >
-> Презентер не эмитирует события.
+>Презентер не эмитирует события.
 >
-> ~~События, эмитируемые валидаторами:~~
+>~~События, эмитируемые валидаторами:~~
 >
-> | Эмитент       | Название                 | Данные            | Описание                                                                      |
-> | ------------- | ------------------------ | ----------------- | ----------------------------------------------------------------------------- |
-> | ~~Presenter~~ | ~~"paymentForm:valid"~~  | ~~error: string~~ | ~~сообщает форме об ошибках валидации (или их отсутствии), разрешает submit~~ |
-> | ~~Presenter~~ | ~~"contactsForm:valid"~~ | ~~error: string~~ | ~~сообщает форме об ошибках валидации (или их отсутствии), разрешает submit~~ |
+>| Эмитент   | Название             | Данные        | Описание                                                                  |
+>| --------- | -------------------- | ------------- | ------------------------------------------------------------------------- |
+>| ~~Presenter~~ | ~~"paymentForm:valid"~~  | ~~error: string~~ | ~~сообщает форме об ошибках валидации (или их отсутствии), разрешает submit~~ |
+>| ~~Presenter~~ | ~~"contactsForm:valid"~~ | ~~error: string~~ | ~~сообщает форме об ошибках валидации (или их отсутствии), разрешает submit~~ |
 >
-> Проверка валидации осуществляется в методах модели CustomerProfile.
+>Проверка валидации осуществляется в методах модели CustomerProfile.
+```
