@@ -449,9 +449,7 @@ interface IBasketList extends IProductList {
 >
 >     	return result;
 >     }
->
 > }
->
 > ```
 > </details>
 
