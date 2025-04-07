@@ -270,62 +270,62 @@ interface IBasketList extends IProductList {
 >```typescript
 >// "Наследуем" поля и методы от класса каталога и указываем интерфейс
 >class BasketList extends ProductList implements IBasketList {
->	// null - бесценный товар
->	protected _totalPrice: number | null;
+>   // null - бесценный товар
+>   protected _totalPrice: number | null;
 >
->	// Конструктор класса (без аргументов)
->	constructor() {
->		// Конструктор родителя
->		super();
->		// По-умолчанию выставляем 0, что соответствует отсутствию товаров в корзине.
->		this._totalPrice = 0;
->		// Возможно, понадобится сразу сделать это, но не факт (нужно отлаживать)
->		// this._emitChanged()
->	}
+>   // Конструктор класса (без аргументов)
+>   constructor() {
+>       // Конструктор родителя
+>       super();
+>       // По-умолчанию выставляем 0, что соответствует отсутствию товаров в корзине.
+>       this._totalPrice = 0;
+>       // Возможно, понадобится сразу сделать это, но не факт (нужно отлаживать)
+>       // this._emitChanged()
+>   }
 >
->	// Метод, который устанавливает стоимость товаров (можно сделать непубличным)
->	set totalPrice(price: number) {
->		this._totalPrice = price;
->	}
+>   // Метод, который устанавливает стоимость товаров (можно сделать непубличным)
+>   set totalPrice(price: number) {
+>       this._totalPrice = price;
+>   }
 >  
->	// Метод, используя который, можно узнать стоимость товаров в корзине
->	get totalPrice() {
->		return this._totalPrice;
->	}
+>   // Метод, используя который, можно узнать стоимость товаров в корзине
+>   get totalPrice() {
+>       return this._totalPrice;
+>   }
 >  
->	// Внутренний метод, который считает стоимость товаров в корзине и обновляет соответствующее поле
->	protected _update(): void {
->		// Вызывая метод родителя, обновляем кол-во товаров в корзине
->		super._update();
->		// Тут считаем стоимость товаров в корзине, включая проверку на "бесценно"
->		// ...
->	}
+>   // Внутренний метод, который считает стоимость товаров в корзине и обновляет соответствующее поле
+>   protected _update(): void {
+>       // Вызывая метод родителя, обновляем кол-во товаров в корзине
+>       super._update();
+>       // Тут считаем стоимость товаров в корзине, включая проверку на "бесценно"
+>       // ...
+>   }
 >
->	// Метод для удаления одного товара из корзины
->	removeProduct(id: string) {
->		// Удаляем товар из корзины
->		this._productList = this._productList.filter((productItem) => productItem.id !== id);
->		// Обновляем поле родителя с кол-вом товаров в корзине и поле потомка со стоимостью
->		this._update();
->		// Эмитируем событие, что данные изменились
->		this._emitChanged()
->	}
+>   // Метод для удаления одного товара из корзины
+>   removeProduct(id: string) {
+>       // Удаляем товар из корзины
+>       this._productList = this._productList.filter((productItem) => productItem.id !== id);
+>       // Обновляем поле родителя с кол-вом товаров в корзине и поле потомка со стоимостью
+>       this._update();
+>       // Эмитируем событие, что данные изменились
+>       this._emitChanged()
+>   }
 >
->	// Очистка корзины
->	clearBasket() {
->		// Удаляем всё из массива
->		this._productList = [];
->		// Обновляем поле родителя с кол-вом товаров в корзине и поле потомка со стоимостью
->		this._update();
->		// Эмитируем событие, что данные изменились
->		this._emitChanged()
->	}
+>   // Очистка корзины
+>   clearBasket() {
+>       // Удаляем всё из массива
+>       this._productList = [];
+>       // Обновляем поле родителя с кол-вом товаров в корзине и поле потомка со стоимостью
+>       this._update();
+>       // Эмитируем событие, что данные изменились
+>       this._emitChanged()
+>   }
 >	
->	// Тут переопределим метод родителя
->	protected _emitChanged(): void {
->		// Добавим немного данных
->		this.emit("basketList:changed", {count: this._totalProducts, price: this._totalPrice});
->	}
+>   // Тут переопределим метод родителя
+>   protected _emitChanged(): void {
+>       // Добавим немного данных
+>       this.emit("basketList:changed", {count: this._totalProducts, price: this._totalPrice});
+>   }
 >}
 >```
 ></details>
@@ -343,102 +343,102 @@ interface IBasketList extends IProductList {
 >
 >// Результат валидации
 >type ValidationResult = {
->	isValid: boolean;
->	error: string;
+>   isValid: boolean;
+>   error: string;
 >};
 >
 >// Профиль покупателя
 >// "Подключаем" брокер событий и указываем интерфейс
 >class CustomerProfile extends EventEmitter implements ICustomerProfile {
->	protected _id: string;
->	protected _fullName: string;
->	protected _preferedPayment: PaymentType;
->	protected _address: string;
->	protected _email: string;
->	protected _phone: string;
+>   protected _id: string;
+>   protected _fullName: string;
+>   protected _preferedPayment: PaymentType;
+>   protected _address: string;
+>   protected _email: string;
+>   protected _phone: string;
 >
->	// Конструктор класса
->	constructor() {
->		// Конструктор родителя
->		super();
->		// Тут инициализируются поля
->		// ...
->	}
+>   // Конструктор класса
+>   constructor() {
+>       // Конструктор родителя
+>       super();
+>       // Тут инициализируются поля
+>       // ...
+>   }
 >
->	// Сеттеры с валидацией
->	set address(address: string) {
->		const isValid = this._isValid('address', address);
+>   // Сеттеры с валидацией
+>   set address(address: string) {
+>       const isValid = this._isValid('address', address);
 >
->		if (isValid) {
->			this._address = address;
->		}
->	}
+>       if (isValid) {
+>           this._address = address;
+>       }
+>   }
 >
->	set email(email: string) {
->		const isValid = this._isValid('email', email);
+>   set email(email: string) {
+>       const isValid = this._isValid('email', email);
 >
->		if (isValid) {
->			this._email = email;
->		}
->	}
+>       if (isValid) {
+>           this._email = email;
+>       }
+>   }
 >
->	set phone(phone: string) {
->		const isValid = this._isValid('phone', phone);
+>   set phone(phone: string) {
+>       const isValid = this._isValid('phone', phone);
 >
->		if (isValid) {
->			this._phone = phone;
->		}
->	}
+>       if (isValid) {
+>           this._phone = phone;
+>       }
+>   }
 >
->	// Прочие сеттеры и геттеры
->	// ...
+>   // Прочие сеттеры и геттеры
+>   // ...
 >
->	// Валидатор (универсальный валидатор)
->	protected _isValid(type: ValidatorType, data: string): boolean {
->		let result: ValidationResult;
+>   // Валидатор (универсальный валидатор)
+>   protected _isValid(type: ValidatorType, data: string): boolean {
+>       let result: ValidationResult;
 >
->		if (type === 'address') {
->			result = this._validateAddress(data);
->			this.emit("paymentForm:valid", result);
->		} else if (type === 'email') {
->			result = this._validateEmail(data);
->			this.emit("contactsForm:valid", result);
->		} else if (type === 'phone') {
->			result = this._validatePhone(data);
->			this.emit("contactsForm:valid", result);
->		} else {
->			// Тут нужно будет что-то вставить
->		}
+>       if (type === 'address') {
+>           result = this._validateAddress(data);
+>           this.emit("paymentForm:valid", result);
+>       } else if (type === 'email') {
+>           result = this._validateEmail(data);
+>           this.emit("contactsForm:valid", result);
+>       } else if (type === 'phone') {
+>           result = this._validatePhone(data);
+>           this.emit("contactsForm:valid", result);
+>       } else {
+>           // Тут нужно будет что-то вставить
+>       }
 >
->		return result.isValid;
->	}
+>       return result.isValid;
+>   }
 >
->	// Валидатор адреса
->	protected _validateAddress(address: string): ValidationResult {
->		let result: ValidationResult = {isValid: false, error: ''};
->		// Тело валидатора адреса
->		// ...
+>   // Валидатор адреса
+>   protected _validateAddress(address: string): ValidationResult {
+>       let result: ValidationResult = {isValid: false, error: ''};
+>       // Тело валидатора адреса
+>       // ...
 >
->		return result;
->	}
+>       return result;
+>   }
 >
->	// Валидатор email
->	protected _validateEmail(email: string): ValidationResult {
->		let result: ValidationResult = {isValid: false, error: ''};
->		// Тело валидатора электронной почты
->		// ...
+>   // Валидатор email
+>   protected _validateEmail(email: string): ValidationResult {
+>       let result: ValidationResult = {isValid: false, error: ''};
+>       // Тело валидатора электронной почты
+>       // ...
 >
->		return result;
->	}
+>       return result;
+>   }
 >
->	// Валидатор телефонного номера
->	protected _validatePhone(phone: string): ValidationResult {
->		let result: ValidationResult = {isValid: false, error: ''};
->		// Тело валидатора телефонного номера
->		// ...
+>   // Валидатор телефонного номера
+>   protected _validatePhone(phone: string): ValidationResult {
+>       let result: ValidationResult = {isValid: false, error: ''};
+>       // Тело валидатора телефонного номера
+>       // ...
 >
->		return result;
->	}
+>       return result;
+>   }
 >}
 >```
 ></details>
