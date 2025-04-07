@@ -17,26 +17,34 @@ export interface ICustomerProfile {
 	address: string;
 	email: string;
 	phone: string;
-	setFullName(fullName: string): void;
-	getFullName(): string;
-	setPreferedPayment(preferedPayment: PaymentType): void;
-	getPreferedPayment(): string;
-	setAddress(address: string): void;
-	getAddress(): string;
-	setEmail(email: string): void;
-	getEmail(): string;
-	setPhone(phone: string): void;
-	getPhone(): string;
+	// setId(): string;
+	// getId(): string;
+	// setFullName(fullName: string): void;
+	// getFullName(): string;
+	// setPreferedPayment(preferedPayment: PaymentType): void;
+	// getPreferedPayment(): PaymentType;
+	// setAddress(address: string): void;
+	// getAddress(): string;
+	// setEmail(email: string): void;
+	// getEmail(): string;
+	// setPhone(phone: string): void;
+	// getPhone(): string;
 }
 
 // Тип оплаты
-export enum PaymentType {
-	CARD,
-	CASH,
-}
+export type PaymentType = 'card' | 'cash';
+
+// Тип валидатора
+export type ValidatorType = 'address' | 'email' | 'phone';
+
+// Результат валидации
+export type ValidationResult = {
+	isValid: boolean;
+	error: string;
+};
 
 // Заказ
-export interface IOrder {
+interface IOrder {
 	id: string;
 	totalPrice: number;
 	orderList: IProductItem[];
@@ -47,15 +55,14 @@ export interface IOrder {
 export interface IProductList {
 	productList: IProductItem[];
 	totalProducts: number;
-	setProductItems(items: IProductItem[]): void;
-	getProductItems(): IProductItem[];
+	addProduct(productItem: IProductItem): IProductItem;
+	getProduct(id: string): IProductItem;
 }
 
 // Корзина товаров
 export interface IBasketList extends IProductList {
-	addProductItem(item: IProductItem): IProductItem;
-	removeProductItem(id: string): void;
-	calcTotalPrice(): number;
+	totalPrice: number;
+	removeProduct(id: string): void;
 	clearBasket(): void;
 }
 
@@ -76,7 +83,8 @@ export interface IBasketList extends IProductList {
 */
 
 export interface IApi {
-	getProductList: () => Promise<IProductList>;
+	// getProductList: () => Promise<IProductList>;
+	getProductList: () => Promise<IProductItem[]>;
 	getProductItem: (id: string) => Promise<IProductItem>;
 	postOrder: (order: IOrder) => Promise<IOrder>;
 }
@@ -132,7 +140,8 @@ export interface IPopupView {
 
 // Контейнер корзины (загружается в универсальный попап)
 export interface IBasketView {
-	setBasketItems(items: IBasketList[]): void;
+	basketContainer: HTMLElement[];
+	// setBasketItems(items: IBasketList[]): void;
 	setTotalPrice(totalPrice: number): void;
 	clearBasket(): void;
 	render(): HTMLElement;
