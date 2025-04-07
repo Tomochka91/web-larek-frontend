@@ -192,7 +192,7 @@ interface IBasketList extends IProductList {
 > <details>
 > <summary>Каталог товаров</summary>
 >  
-> ```typescrypt
+> ```typescript
 > // "Подключаем" брокер событий и указываем интерфейс
 > class ProductList extends EventEmitter implements IProductList {
 > 	protected _productList: IProductItem[];
