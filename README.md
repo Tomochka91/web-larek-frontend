@@ -161,22 +161,20 @@ PS: для интерфейсов и классов, которые исполь
 ```typescript
 // Единица товара (интерфейс)
 interface IProductItem {
-	id: string;             // Id товара
-	description: string;    // Описание товара
-	image: string;          // Ссылка на изображение товара
-	title: string;          // Название товара
-	category: string;       // Категория
-	price: number | null;   // Цена единицы товара (или "бесценно")
+    id: string;             // Id товара
+    description: string;    // Описание товара
+    image: string;          // Ссылка на изображение товара
+    title: string;          // Название товара
+    category: string;       // Категория
+    price: number | null;   // Цена единицы товара (или "бесценно")
 }
-```
 
-```typescript
 // Каталог товаров (интерфейс)
 interface IProductList {
-	productList: IProductItem[];                           // Каталог товаров
-	totalProducts: number;                                 // Кол-во товаров в каталоге
-	addProduct(productItem: IProductItem): IProductItem;   // Добавить единицу продукта в каталог
-	getProduct(id: string): IProductItem;                  // Получить единицу продукта из каталога по Id
+    productList: IProductItem[];                           // Каталог товаров
+    totalProducts: number;                                 // Кол-во товаров в каталоге
+    addProduct(productItem: IProductItem): IProductItem;   // Добавить единицу продукта в каталог
+    getProduct(id: string): IProductItem;                  // Получить единицу продукта из каталога по Id
 }
 ```
 >ℹ️ **Изменения 07-04-2025:**
@@ -185,9 +183,9 @@ interface IProductList {
 ```typescript
 // Корзина товаров (интерфейс)
 interface IBasketList extends IProductList {
-	totalPrice: number | null;                  // Стоимость товаров в корзине
-	removeProduct(id: string): void;            // Удалить товар из корзины по Id
-	clearBasket(): void;                        // Очистить корзину
+    totalPrice: number | null;                  // Стоимость товаров в корзине
+    removeProduct(id: string): void;            // Удалить товар из корзины по Id
+    clearBasket(): void;                        // Очистить корзину
 }
 ```
 
@@ -200,68 +198,68 @@ interface IBasketList extends IProductList {
 >```typescript
 >// "Подключаем" брокер событий и указываем интерфейс
 >class ProductList extends EventEmitter implements IProductList {
->	protected _productList: IProductItem[];
->	protected _totalProducts: number;
+>   protected _productList: IProductItem[];
+>   protected _totalProducts: number;
 >    
->	// Конструктор класса (без аргументов)
->	constructor() {
->		// Конструктор родителя
->		super();
->		this._productList = [];
->		this._totalProducts = 0;
->	}
+>   // Конструктор класса (без аргументов)
+>   constructor() {
+>       // Конструктор родителя
+>       super();
+>       this._productList = [];
+>       this._totalProducts = 0;
+>   }
 >
->	// Метод, который заполняет массив товаров (каталог)
->	set productList(data: IProductItem[]) {
->		// Основная работа сеттера (заполнить поле данными, полученными от сервера, или ещё откуда-то)
->		this._productList = data;
->		// Обновляем поле с кол-вом товаров в каталоге
->		this._update();
->		// Эмитируем событие, что данные изменились
->		this._emitChanged()
->	}
+>   // Метод, который заполняет массив товаров (каталог)
+>   set productList(data: IProductItem[]) {
+>       // Основная работа сеттера (заполнить поле данными, полученными от сервера, или ещё откуда-то)
+>       this._productList = data;
+>       // Обновляем поле с кол-вом товаров в каталоге
+>       this._update();
+>       // Эмитируем событие, что данные изменились
+>       this._emitChanged()
+>   }
 >  
->	// Метод, используя который, можно получить массив товаров (каталог)
->	get productList() {
->		return this._productList;
->	}
+>   // Метод, используя который, можно получить массив товаров (каталог)
+>   get productList() {
+>       return this._productList;
+>   }
 >  
->	// Метод, который устанавливает кол-во товаров (можно сделать непубличным)
->	set totalProducts(count: number) {
->		this._totalProducts = count;
->	}
+>   // Метод, который устанавливает кол-во товаров (можно сделать непубличным)
+>   set totalProducts(count: number) {
+>       this._totalProducts = count;
+>   }
 >  
->	// Метод, используя который, можно узнать кол-во товаров в каталоге
->	get totalProducts() {
->		return this._totalProducts;
->	}
+>   // Метод, используя который, можно узнать кол-во товаров в каталоге
+>   get totalProducts() {
+>       return this._totalProducts;
+>   }
 >  
->	// Внутренний метод, который считает кол-во товаров в массиве и обновляет соответствующее поле
->	protected _update(): void {
->		this._totalProducts = this._productList.length || 0;
->	}
+>   // Внутренний метод, который считает кол-во товаров в массиве и обновляет соответствующее поле
+>   protected _update(): void {
+>       this._totalProducts = this._productList.length || 0;
+>   }
 >  
->	// Метод для добавления одного товара в каталог (раз уж есть такая возможность в Api)
->	addProduct(productItem: IProductItem) {
->		// Добавляем новый товар в каталог
->		this._productList.push(productItem);
->		// Обновляем поле с кол-вом товаров в каталоге
->		this._update();
->		// Эмитируем событие, что данные изменились
->		this._emitChanged()
->		// Возвращаем "товар"
->		return productItem;
->	}
+>   // Метод для добавления одного товара в каталог (раз уж есть такая возможность в Api)
+>   addProduct(productItem: IProductItem) {
+>       // Добавляем новый товар в каталог
+>       this._productList.push(productItem);
+>       // Обновляем поле с кол-вом товаров в каталоге
+>       this._update();
+>       // Эмитируем событие, что данные изменились
+>       this._emitChanged()
+>       // Возвращаем "товар"
+>       return productItem;
+>   }
 >  
->	// Метод, чтобы получить данные товара, зная его Id
->	getProduct(id: string) {
->		return this._productList.find((productItem) => productItem.id === id);
->	}
+>   // Метод, чтобы получить данные товара, зная его Id
+>   getProduct(id: string) {
+>       return this._productList.find((productItem) => productItem.id === id);
+>   }
 >
->	// Переопределяемый метод для брокера событий
->	protected _emitChanged(): void {
->		this.emit("productList:changed");
->	}
+>   // Переопределяемый метод для брокера событий
+>   protected _emitChanged(): void {
+>       this.emit("productList:changed");
+>   }
 >}
 >```
 ></details>
@@ -450,13 +448,13 @@ interface IBasketList extends IProductList {
 ```typescript
 // Интерфейс представления карточки (для абстрактного класса и трёх его потомков)
 interface ICardView {
-	id: string;
-	render(item: IProductItem): HTMLElement;
+    id: string;
+    render(item: IProductItem): HTMLElement;
 }
 
 // Универсальный конструктор для карточек
 interface ICardConstructor<T extends ICardView> {
-	new (template: HTMLTemplateElement): T;
+    new (template: HTMLTemplateElement): T;
 }
 
 // Абстрактный класс карточки, в котором определены общие поля и методы
