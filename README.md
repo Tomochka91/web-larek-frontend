@@ -262,6 +262,7 @@ class ProductList extends EventEmitter implements IProductList {
 
 ```
 </details>
+
 <details>
 <summary>Корзина</summary>
 ```
@@ -330,6 +331,7 @@ protected \_totalPrice: number | null;
 
 ````
 </details>
+
 <details>
 <summary>Профиль покупателя</summary>
 ```js
