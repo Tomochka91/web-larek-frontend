@@ -1,3 +1,5 @@
+import { IEvents } from '../components/base/events';
+
 // -----MODEL-----MODEL-----MODEL-----MODEL-----MODEL-----MODEL-----MODEL-----MODEL-----MODEL-----MODEL
 // Единица товара
 export interface IProductItem {
@@ -11,9 +13,9 @@ export interface IProductItem {
 
 // Профиль покупателя
 export interface ICustomerProfile {
-	id: string;
-	fullName: string;
-	preferedPayment: PaymentType;
+	id?: string;
+	fullName?: string;
+	payment: PaymentType;
 	address: string;
 	email: string;
 	phone: string;
@@ -31,141 +33,78 @@ export interface ICustomerProfile {
 	// getPhone(): string;
 }
 
-// Тип оплаты
-export type PaymentType = 'card' | 'cash';
+// Возможные ошибки ввода персональных данных
+export type ProfileErrors = Partial<Record<keyof ICustomerProfile, string>>;
 
-// Тип валидатора
-export type ValidatorType = 'address' | 'email' | 'phone';
+// Тип оплаты
+export type PaymentType = null | 'online' | 'cash';
+
+// Этап оплаты
+export type CheckoutStage = 'order' | 'contacts';
 
 // Результат валидации
 export type ValidationResult = {
-	isValid: boolean;
-	error: string;
+	valid: boolean;
+	errors: string;
 };
 
-// Заказ
-interface IOrder {
+// Заказ на сервер
+export type IOrderRequest = ICustomerProfile & {
+	total: number;
+	items: string[];
+};
+
+// Ответ сервера на заказ
+export type IOrderResponse = {
 	id: string;
-	totalPrice: number;
-	orderList: IProductItem[];
-	customer: ICustomerProfile;
-}
+	total: number;
+};
 
 // Каталог товаров, загруженный с сервера с использованием API
 export interface IProductList {
 	productList: IProductItem[];
 	totalProducts: number;
 	addProduct(productItem: IProductItem): IProductItem;
-	getProduct(id: string): IProductItem;
+	getProduct(id: string): IProductItem | undefined;
+	apiGetProductList(): void;
 }
 
 // Корзина товаров
 export interface IBasketList extends IProductList {
 	totalPrice: number;
 	removeProduct(id: string): void;
+	toggleProduct(productItem: IProductItem): void;
 	clearBasket(): void;
 }
 
+// Заказ
+export interface IOrder {
+	id: string;
+	totalPrice: number;
+	orderList: IProductItem[];
+	setStage(stage: CheckoutStage): void;
+	setProfileField<T extends keyof ICustomerProfile>(
+		field: T,
+		value: ICustomerProfile[T]
+	): void;
+	getProfileField<T extends keyof ICustomerProfile>(
+		field: T
+	): ICustomerProfile[T];
+	getValidationResult(): ValidationResult;
+	getOrderResponse(): IOrderResponse;
+	validate(): void;
+	apiPostOrder(): void;
+}
+
 //----API----API----API----API----API----API----API----API----API----API----API----API----API----API----API----API----API
-/*
-// Вместо ApiListResponse<Type>
-// export interface IApiProductListResult extends IProductList {
-// 	status: string;
-// }
-
-// export interface IApiProductItemResult extends IProductItem {
-// 	status: string;
-// }
-
-// export interface IApiOrderResult extends IOrder {
-// 	status: string;
-// }
-*/
-
 export interface IApi {
 	// getProductList: () => Promise<IProductList>;
 	getProductList: () => Promise<IProductItem[]>;
 	getProductItem: (id: string) => Promise<IProductItem>;
-	postOrder: (order: IOrder) => Promise<IOrder>;
+	postOrder: (order: IOrderRequest) => Promise<IOrderResponse>;
 }
 
-//----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW----VIEW
-// Главная страница
-export interface IPageView {
-	setBasketCounter(count: number): void;
-	// Кнопка корзины со счетчиком
-	basketButton: HTMLElement;
-	// Каталог товаров
-	galleryContainer: HTMLElement[];
-}
-
-// Универсальная карточка (для абстрактного класса и трёх его потомков)
-export interface ICardView {
-	id: string;
-	render(item: IProductItem): HTMLElement;
-}
-
-// Универсальный конструктор для карточек
-export interface ICardConstructor<T extends ICardView> {
-	new (template: HTMLTemplateElement): T;
-}
-
-/*
-// Элемент карточки на главной странице
-// export interface ICardCatalogView {
-// 	id: string;
-// 	render(item: IProductItem): HTMLElement;
-// }
-
-// Элемент карточки в попапе превью
-// export interface ICardPreviewView {
-// 	id: string;
-// 	buttonText: string;
-// 	render(item: IProductItem): HTMLElement;
-// }
-
-// Элемент карточки в корзине
-// export interface ICardBasketView {
-// 	id: string;
-// 	render(item: IProductItem): HTMLElement;
-// }
-*/
-
-// Универсальный попап
-export interface IPopupView {
-	content: HTMLElement;
-	open(): void;
-	close(): void;
-}
-
-// Контейнер корзины (загружается в универсальный попап)
-export interface IBasketView {
-	basketContainer: HTMLElement[];
-	// setBasketItems(items: IBasketList[]): void;
-	setTotalPrice(totalPrice: number): void;
-	clearBasket(): void;
-	render(): HTMLElement;
-}
-
-// Форма выбора способа оплаты (загружается в универсальный попап)
-export interface IPaymentFormView {
-	addressPlaceholder: string;
-	setValid(error: string): void;
-	resetForm(): void;
-	render(): HTMLFormElement;
-}
-
-// Форма ввода контактов (загружается в универсальный попап)
-export interface IContactsFormView {
-	emailPlaceholder: string;
-	phonePlaceholder: string;
-	setValid(error: string): void;
-	resetForm(): void;
-	render(): HTMLFormElement;
-}
-
-// Контейнер успешного оформления заказа
-export interface ISuccessView {
-	setTotalPrice(totalPrice: number): void;
-	render(): HTMLElement;
+//---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW---VIEW
+export interface IViewConstructor<T> {
+	new (container: HTMLElement, event: IEvents): T;
 }
